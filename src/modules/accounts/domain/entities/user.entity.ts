@@ -8,8 +8,6 @@ export class UserEntity extends DefaultEntity {
 
   profileId?: string | null;
   profile?: ProfileEntity;
-  // projects?: ProjectEntity[];
-  // tasks?: TaskEntity[];
 
   constructor(user: Partial<UserEntity>) {
     super();

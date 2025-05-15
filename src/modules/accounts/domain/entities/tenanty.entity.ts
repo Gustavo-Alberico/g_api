@@ -1,5 +1,3 @@
-import { DefaultEntity } from 'src/shared/domain/entities/default.entity';
-
 export class TenantEntity {
   id: string;
   name: string;

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AccountsController } from './presentation/controllers/accounts.controller';
-import { SignUpUseCase } from './application/usecases/signup.use-case';
+import { SignUpUseCase } from './application/use-cases/signup.use-case';
 import { USER_REPOSITORY } from './domain/repositories/user.repository';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { PrismaModule } from 'src/shared/prisma/prisma.module';
@@ -12,12 +12,12 @@ import { TenantRepositoryImpl } from './infrastructure/database/repositories/ten
 import { UserFactory } from './application/factories/user.factory';
 import { TenantFactory } from './application/factories/tenant.factory';
 import { ProfileFactory } from './application/factories/profile.factory';
-import { EmailAlreadyExistsUseCase } from './application/usecases/email-already-exists.use-case';
-import { TenantCreateUseCase } from './application/usecases/tenant-create.use-case';
-import { UserCreateUseCase } from './application/usecases/user-create.use-case';
-import { ProfileCreateUseCase } from './application/usecases/profile-create.use-case ';
+import { GetUserByEmailUseCase } from './application/use-cases/get-user-by-email.use-case';
+import { TenantCreateUseCase } from './application/use-cases/tenant-create.use-case';
+import { UserCreateUseCase } from './application/use-cases/user-create.use-case';
+import { ProfileCreateUseCase } from './application/use-cases/profile-create.use-case ';
 import { CryptoModule } from 'src/shared/crypto/crypto.module';
-import { HashPasswordUseCase } from './application/usecases/hash-password.use-case';
+import { HashPasswordUseCase } from './application/use-cases/hash-password.use-case';
 import { UserDtoMapper } from './presentation/mappers/user-dto.mapper';
 
 @Module({
@@ -27,7 +27,7 @@ import { UserDtoMapper } from './presentation/mappers/user-dto.mapper';
     TenantFactory,
     UserFactory,
     ProfileFactory,
-    EmailAlreadyExistsUseCase,
+    GetUserByEmailUseCase,
     HashPasswordUseCase,
     TenantCreateUseCase,
     UserCreateUseCase,

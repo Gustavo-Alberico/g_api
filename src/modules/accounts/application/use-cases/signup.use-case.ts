@@ -4,7 +4,7 @@ import { SignUpDto } from '../../presentation/dto/signup.dto';
 import ITransactionManager, {
   TRANSACTION_MANAGER,
 } from 'src/shared/application/ports/transaction.manager';
-import { EmailAlreadyExistsUseCase } from './email-already-exists.use-case';
+import { GetUserByEmailUseCase } from './get-user-by-email.use-case';
 import { TenantCreateUseCase } from './tenant-create.use-case';
 import { UserFactory } from '../factories/user.factory';
 import { UserCreateUseCase } from './user-create.use-case';
@@ -19,7 +19,7 @@ export class SignUpUseCase {
     private createTenantUseCase: TenantCreateUseCase,
     private userCreateUseCase: UserCreateUseCase,
     private profileCreateUseCase: ProfileCreateUseCase,
-    private emailAlreadyExistsUseCase: EmailAlreadyExistsUseCase,
+    private emailAlreadyExistsUseCase: GetUserByEmailUseCase,
     private hashPasswordUseCase: HashPasswordUseCase,
     private userFactory: UserFactory,
     private profileFactory: ProfileFactory,
@@ -29,12 +29,12 @@ export class SignUpUseCase {
 
   execute(signUpData: SignUpDto): Promise<UserEntity> {
     return this.transactionService.execute(async (tx) => {
-      const exists = await this.emailAlreadyExistsUseCase.execute(
+      let user = await this.emailAlreadyExistsUseCase.execute(
         signUpData.email,
         tx,
       );
 
-      if (exists) {
+      if (user) {
         throw new EmailAlreadyExistsError('Email already exists');
       }
 
@@ -48,7 +48,7 @@ export class SignUpUseCase {
       );
       userEntity.password = hashedPassword;
 
-      const user = await this.userCreateUseCase.execute(userEntity, tx);
+      user = await this.userCreateUseCase.execute(userEntity, tx);
 
       const profile = this.profileFactory.create(tenant.id, user.id);
       await this.profileCreateUseCase.execute(profile, tx);

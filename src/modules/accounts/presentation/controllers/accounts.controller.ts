@@ -1,6 +1,6 @@
 import { Controller, Post, Body, ConflictException } from '@nestjs/common';
 import { SignUpDto } from '../dto/signup.dto';
-import { SignUpUseCase } from '../../application/usecases/signup.use-case';
+import { SignUpUseCase } from '../../application/use-cases/signup.use-case';
 import { EmailAlreadyExistsError } from '../../domain/errors/email-already-exists.error';
 import { UserDtoMapper } from '../mappers/user-dto.mapper';
 

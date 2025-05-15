@@ -2,13 +2,11 @@ import { Injectable } from '@nestjs/common';
 import IUserRepository from 'src/modules/accounts/domain/repositories/user.repository';
 import { UserEntity } from 'src/modules/accounts/domain/entities/user.entity';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { UserFactory } from 'src/modules/accounts/application/factories/user.factory';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UserRepositoryImpl implements IUserRepository {
   constructor(private prismaService: PrismaService) {}
-
   createUser(
     userEntity: UserEntity,
     tx: Prisma.TransactionClient,
@@ -24,17 +22,16 @@ export class UserRepositoryImpl implements IUserRepository {
     });
   }
 
-  async emailAlreadyExists(
+  async getUserByEmail(
     email: string,
     tx: Prisma.TransactionClient,
-  ): Promise<boolean> {
+  ): Promise<UserEntity | null> {
     const client = tx || this.prismaService;
 
-    const existingUser = await client.user.findFirst({
+    const user = await client.user.findUnique({
       where: { email },
-      select: { id: true },
     });
 
-    return Boolean(existingUser);
+    return user;
   }
 }
